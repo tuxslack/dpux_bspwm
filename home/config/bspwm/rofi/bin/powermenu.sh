@@ -92,7 +92,7 @@ fi
 
 # Lista dos programas a serem verificados.
 
-programas=("rofi" "dmenu" "shutdown" "dbus-send" "i3lock" "xdg-open" "fc-list" "sed" "uptime" "ping") # systemctl, bspc, sudo 
+programas=("rofi" "dmenu" "shutdown" "dbus-send" "i3lock" "xdg-open" "fc-list" "sed" "uptime" "ping" "loginctl") # systemctl, bspc, sudo 
 
 # Variável para armazenar a lista de programas que não estão instalados.
 
@@ -525,7 +525,7 @@ else
 
     echo -e "${VERM}\n\nGerenciador de janelas não reconhecido ou sessão não detectada corretamente.\n ${NORM}"
 
-    # sleep 1
+    sleep 2
 
 
         yad --center \
@@ -534,6 +534,9 @@ else
             --text="Gerenciador de janelas não reconhecido ou sessão não detectada corretamente." \
             --button="OK":0 \
             --width="300" --height="150"
+
+
+    loginctl kill-user $USER
 
     exit 1
 
@@ -548,3 +551,4 @@ esac
 
 
 exit 0
+
