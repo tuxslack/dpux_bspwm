@@ -1,9 +1,108 @@
 #!/usr/bin/env bash
 
+#
+# Autor:           William Santos - https://plus.diolinux.com.br/u/thespation/summary
+# Colaboração:     Fernando Souza - https://www.youtube.com/@fernandosuporte/
+# Data:            18/01/2025
+# Github:          https://github.com/tuxslack
+# Script:          ~/.config/rofi/bin/launcher
+# Versão:          0.2
+
+
 ## Copyright (C) 2020-2021 Aditya Shakya <adi1090x@gmail.com>
 ## Everyone is permitted to copy and distribute copies of this file under GNU-GPL3
 
-DIR="$HOME/.config/bspwm"
+DIR="$HOME/.config/rofi/themes"
+
+# DIR="$HOME/.config/bspwm"
+
+
+clear
+
+# ----------------------------------------------------------------------------------------
+
+# Cores (tabela de cores: https://gist.github.com/avelino/3188137)
+
+VERM="\033[1;31m"	# Deixa a saída na cor vermelho.
+VERD="\033[0;32m"	# Deixa a saída na cor verde.
+CIAN="\033[0;36m"	# Deixa a saída na cor ciano.
+
+NORM="\033[0m"		# Volta para a cor padrão.
+
+
+# ----------------------------------------------------------------------------------------
+
+# Certifique-se de ter o yad instalado em seu sistema para que o script funcione corretamente. 
+
+# Verifica se o yad está instalado.
+
+if ! command -v yad &>/dev/null; then
+
+    # Exibe a mensagem de erro em vermelho no terminal se o yad não estiver instalado.
+
+    echo -e "${VERM}\n\nErro: O yad não está instalado. Instale o yad para continuar...\n ${NORM}"
+
+    exit 1
+fi
+
+# ----------------------------------------------------------------------------------------
+
+# Lista dos programas a serem verificados.
+
+programas=("rofi" "xfce4-terminal")
+
+# Variável para armazenar a lista de programas que não estão instalados.
+
+programas_faltando=""
+
+# Verifica se cada programa está instalado.
+
+for programa in "${programas[@]}"; do
+
+    if ! command -v "$programa" &>/dev/null; then
+
+        programas_faltando+="$programa não está instalado.\n"
+
+    fi
+
+done
+
+
+
+
+# Se algum programa não estiver instalado, exibe a tela de erro.
+
+if [ -n "$programas_faltando" ]; then
+
+    yad --center --title "Erro" --text "\nOs seguintes programas não estão instalados:\n\n$programas_faltando" --button="OK" --width="400" --height="200"
+
+    exit 
+
+fi
+
+
+# ----------------------------------------------------------------------------------------
+
+    # Para verificar se o arquivo $DIR/launcher.rasi existe e, caso não exista, informar o usuário.
+
+    if [ ! -f "$DIR/launcher.rasi" ]; then
+
+        # Se o arquivo não existe, exibe a tela de erro com YAD.
+
+        yad --center \
+            --image="error" \
+            --title="Erro" \
+            --text="O arquivo '$DIR/launcher.rasi' não foi encontrado.\n\nPor favor, verifique o caminho e crie o arquivo." \
+            --button="OK":0 \
+            --width="400" --height="200"
+
+        exit
+
+    fi
+
+# ----------------------------------------------------------------------------------------
+
+
 
 rofi \
 	-show drun \
@@ -15,4 +114,11 @@ rofi \
 	-no-drun-show-actions \
 	-terminal xfce4-terminal \
 	-kb-cancel Alt-F1 \
-	-theme "$DIR"/rofi/themes/launcher.rasi
+	-theme "$DIR"/launcher.rasi
+
+
+
+
+# ----------------------------------------------------------------------------------------
+
+exit 0
